@@ -1,0 +1,207 @@
+{% extends "base.html" %}
+
+{% block title %}Tổng kết - {{ student.name }}{% endblock %}
+
+{% block content %}
+
+<!-- ====== PAGE HERO ====== -->
+<section class="page-hero">
+    <div class="page-hero-bg">
+        <div class="hero-blob blob-1"></div>
+        <div class="hero-blob blob-2"></div>
+    </div>
+    <div class="container">
+        <div class="page-hero-content" data-aos="fade-up">
+            <div class="breadcrumb">
+                <a href="{{ url_for('index') }}">Trang chủ</a>
+                <span>/</span>
+                <span>Tổng kết</span>
+            </div>
+            <h1 class="page-title">Tổng kết Học kỳ</h1>
+            <p class="page-desc">
+                Nhìn lại hành trình học tập và những điều đạt được sau một học kỳ
+                khám phá <strong>Công nghệ số & AI</strong>
+            </p>
+            <!-- Số liệu tổng kết -->
+            <div class="page-stats">
+                <div class="pstat">
+                    <span class="pstat-num">{{ summary.overall_grade }}</span>
+                    <span class="pstat-label">Điểm tổng kết</span>
+                </div>
+                <div class="pstat">
+                    <span class="pstat-num">{{ summary.total_hours }}</span>
+                    <span class="pstat-label">Giờ học tập</span>
+                </div>
+                <div class="pstat">
+                    <span class="pstat-num">{{ summary.projects_completed }}</span>
+                    <span class="pstat-label">Bài tập hoàn thành</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ====== REFLECTION QUOTE ====== -->
+<section class="section reflection-section">
+    <div class="container">
+        <div class="reflection-card" data-aos="zoom-in">
+            <div class="reflection-icon"></div>
+            <blockquote class="reflection-quote">
+                "{{ summary.reflection }}"
+            </blockquote>
+            <cite class="reflection-author">— {{ student.name }}, {{ student.year }}</cite>
+        </div>
+    </div>
+</section>
+
+<!-- ====== NHỮNG ĐIỀU HỌC ĐƯỢC ====== -->
+<section class="section lessons-section">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-badge">Kiến thức</span>
+            <h2 class="section-title">Những điều học được</h2>
+            <p class="section-sub">Bài học quý giá từ mỗi bài tập và trải nghiệm học tập</p>
+        </div>
+        <div class="lessons-grid">
+            {% for lesson in summary.lessons_learned %}
+            <div class="lesson-card" data-aos="fade-up" data-aos-delay="{{ loop.index0 * 80 }}">
+                <div class="lesson-icon">{{ lesson.icon }}</div>
+                <h4>{{ lesson.title }}</h4>
+                <p>{{ lesson.desc }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ====== KỸ NĂNG ĐẠT ĐƯỢC ====== -->
+<section class="section skills-section">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-badge">Kỹ năng</span>
+            <h2 class="section-title">Kỹ năng đạt được</h2>
+            <p class="section-sub">Mức độ thành thạo các kỹ năng sau một học kỳ</p>
+        </div>
+
+        <div class="skills-layout">
+            <!-- Kỹ năng kỹ thuật -->
+            <div class="skills-col" data-aos="fade-right">
+                <h3 class="skills-col-title">Kỹ năng kỹ thuật</h3>
+                {% for skill in summary.skills.technical %}
+                <div class="skill-bar-item">
+                    <div class="skill-bar-header">
+                        <span class="skill-name">{{ skill.name }}</span>
+                        <span class="skill-pct">{{ skill.level }}%</span>
+                    </div>
+                    <div class="skill-bar-track">
+                        <div class="skill-bar-fill"
+                             data-width="{{ skill.level }}"
+                             style="width: 0%"></div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Kỹ năng mềm -->
+            <div class="skills-col" data-aos="fade-left">
+                <h3 class="skills-col-title">Kỹ năng mềm</h3>
+                {% for skill in summary.skills.soft %}
+                <div class="skill-bar-item">
+                    <div class="skill-bar-header">
+                        <span class="skill-name">{{ skill.name }}</span>
+                        <span class="skill-pct">{{ skill.level }}%</span>
+                    </div>
+                    <div class="skill-bar-track">
+                        <div class="skill-bar-fill skill-bar-fill--soft"
+                             data-width="{{ skill.level }}"
+                             style="width: 0%"></div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ====== KHÓ KHĂN GẶP PHẢI ====== -->
+<section class="section challenges-section">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-badge">Thách thức</span>
+            <h2 class="section-title">Khó khăn gặp phải</h2>
+            <p class="section-sub">Những thử thách và cách vượt qua</p>
+        </div>
+        <div class="challenges-grid">
+            {% for ch in summary.challenges %}
+            <div class="challenge-card" data-aos="fade-up" data-aos-delay="{{ loop.index0 * 100 }}">
+                <div class="challenge-icon">{{ ch.icon }}</div>
+                <div class="challenge-body">
+                    <h4>{{ ch.title }}</h4>
+                    <p>{{ ch.desc }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ====== ĐỊNH HƯỚNG TƯƠNG LAI ====== -->
+<section class="section future-section">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-badge">Tương lai</span>
+            <h2 class="section-title">Định hướng phát triển</h2>
+            <p class="section-sub">Kế hoạch và mục tiêu cho các học kỳ tiếp theo</p>
+        </div>
+        <div class="future-timeline">
+            {% for plan in summary.future_plans %}
+            <div class="timeline-item" data-aos="fade-right" data-aos-delay="{{ loop.index0 * 100 }}">
+                <div class="tl-dot">{{ loop.index }}</div>
+                <div class="tl-content">
+                    <p>{{ plan }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ====== CTA CUỐI TRANG ====== -->
+<section class="section cta-section">
+    <div class="container">
+        <div class="cta-card" data-aos="zoom-in">
+            <h2>Cảm ơn bạn đã ghé thăm!</h2>
+            <p>Portfolio này là minh chứng cho hành trình học tập không ngừng của tôi.</p>
+            <div class="cta-actions">
+                <a href="{{ url_for('projects') }}" class="btn btn-primary">Xem tất cả dự án</a>
+                <a href="{{ url_for('index') }}" class="btn btn-outline">
+                    Về trang chủ
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Animate skill bars khi cuộn đến phần kỹ năng
+const skillBars = document.querySelectorAll('.skill-bar-fill');
+
+const animateBars = () => {
+    skillBars.forEach(bar => {
+        const rect = bar.closest('.skill-bar-item').getBoundingClientRect();
+        // Kiểm tra nếu phần tử trong viewport
+        if (rect.top < window.innerHeight * 0.9 && !bar.classList.contains('animated')) {
+            bar.classList.add('animated');
+            bar.style.width = bar.dataset.width + '%';
+        }
+    });
+};
+
+// Chạy khi tải trang và khi cuộn
+window.addEventListener('scroll', animateBars);
+window.addEventListener('load', () => setTimeout(animateBars, 500));
+</script>
+{% endblock %}

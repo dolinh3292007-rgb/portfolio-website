@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block title %}Dự án - {{ student.name }}{% endblock %}
+
+{% block content %}
+
+<!-- ====== PAGE HEADER ====== -->
+<section class="page-hero">
+    <div class="page-hero-bg">
+        <div class="hero-blob blob-1"></div>
+        <div class="hero-blob blob-3"></div>
+    </div>
+    <div class="container">
+        <div class="page-hero-content" data-aos="fade-up">
+            <div class="breadcrumb">
+                <a href="{{ url_for('index') }}">Trang chủ</a>
+                <span>/</span>
+                <span>Dự án</span>
+            </div>
+            <h1 class="page-title">Các Bài Tập</h1>
+            <p class="page-desc">
+                6 bài tập thực hành trong môn
+                <strong>Nhập môn Công nghệ số và Ứng dụng Trí tuệ Nhân tạo</strong>
+            </p>
+            <!-- Thống kê nhanh -->
+            <div class="page-stats">
+                <div class="pstat">
+                    <span class="pstat-num">{{ projects|length }}</span>
+                    <span class="pstat-label">Bài tập</span>
+                </div>
+                <div class="pstat">
+                    <span class="pstat-num">12</span>
+                    <span class="pstat-label">Tuần học</span>
+                </div>
+                <div class="pstat">
+                    <span class="pstat-num">9.0</span>
+                    <span class="pstat-label">Điểm TB</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ====== DANH SÁCH DỰ ÁN ====== -->
+<section class="section">
+    <div class="container">
+
+        <!-- Bộ lọc (Filter) -->
+        <div class="filter-bar" data-aos="fade-up">
+            <button class="filter-btn active" data-filter="all">Tất cả</button>
+            <button class="filter-btn" data-filter="hardware">Phần cứng</button>
+            <button class="filter-btn" data-filter="data">Dữ liệu</button>
+            <button class="filter-btn" data-filter="ai">Trí tuệ nhân tạo</button>
+            <button class="filter-btn" data-filter="skills">Kỹ năng</button>
+            <button class="filter-btn" data-filter="creative">Sáng tạo</button>
+            <button class="filter-btn" data-filter="ethics">Đạo đức số</button>
+        </div>
+
+        <!-- Grid dự án -->
+        <div class="projects-grid">
+            {% for project in projects %}
+            <article class="project-card" data-aos="fade-up" data-aos-delay="{{ loop.index0 * 100 }}"
+                     data-category="{{ project.category | lower | replace(' ', '') }}">
+                <!-- Header với màu accent -->
+                <div class="pc-header" style="--accent: {{ project.color }}">
+                    <div class="pc-number">{{ "%02d" % project.id }}</div>
+                    <div class="pc-icon">{{ project.icon }}</div>
+                    <div class="pc-week">{{ project.week }}</div>
+                </div>
+
+                <!-- Nội dung card -->
+                <div class="pc-body">
+                    <div class="pc-category">{{ project.category }}</div>
+                    <h3 class="pc-title">{{ project.title }}</h3>
+                    <p class="pc-objective">{{ project.objective[:130] }}...</p>
+
+                    <!-- Tags -->
+                    <div class="pc-tags">
+                        {% for tag in project.tags[:3] %}
+                        <span class="ptag">{{ tag }}</span>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Điểm số -->
+                    <div class="pc-grade">
+                        <span class="grade-label">Điểm:</span>
+                        <span class="grade-value">{{ project.grade }}</span>
+                    </div>
+                </div>
+
+                <!-- Footer với nút -->
+                <div class="pc-footer">
+                    <a href="{{ url_for('project_detail', slug=project.slug) }}" class="btn-card">
+                        Xem chi tiết <span class="btn-arrow">→</span>
+                    </a>
+                    {% if project.pdf %}
+                    <a href="{{ project.pdf }}" target="_blank" class="btn-card-icon" title="Tải PDF"></a>
+                    {% endif %}
+                    {% if project.video %}
+                    <a href="{{ project.video }}" target="_blank" class="btn-card-icon" title="Xem video"></a>
+                    {% endif %}
+                </div>
+
+                <!-- Hover overlay -->
+                <div class="pc-overlay" style="--accent: {{ project.color }}"></div>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Chức năng lọc bài tập theo danh mục
+document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        // Cập nhật trạng thái active
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+
+        const filter = this.dataset.filter;
+        const cards = document.querySelectorAll('.project-card');
+
+        cards.forEach(card => {
+            const cat = card.dataset.category || '';
+            if (filter === 'all' || cat.includes(filter)) {
+                card.style.display = 'flex';
+                card.style.animation = 'fadeInUp 0.4s ease';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

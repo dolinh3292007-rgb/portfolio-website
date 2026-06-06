@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Portfolio - {{ student.name }}{% endblock %}</title>
+
+    <!-- Google Fonts: Sử dụng font đẹp, hiện đại -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- CSS chính -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+    <!-- ====== NAVBAR ====== -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <!-- Logo / Tên sinh viên -->
+            <a href="{{ url_for('index') }}" class="nav-logo">
+                <span class="logo-icon">⬡</span>
+                <span class="logo-text">{{ student.name.split()[0] }} <strong>Portfolio</strong></span>
+            </a>
+
+            <!-- Menu Desktop -->
+            <ul class="nav-menu" id="navMenu">
+                <li>
+                    <a href="{{ url_for('index') }}"
+                       class="nav-link {% if page == 'home' %}active{% endif %}">
+                        Giới thiệu
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('projects') }}"
+                       class="nav-link {% if page == 'projects' %}active{% endif %}">
+                        Dự án
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('summary') }}"
+                       class="nav-link {% if page == 'summary' %}active{% endif %}">
+                        Tổng kết
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Nút Hamburger (Mobile) -->
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ====== NỘI DUNG CHÍNH ====== -->
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- ====== FOOTER ====== -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <!-- Cột 1: Thông tin -->
+                <div class="footer-col">
+                    <h3 class="footer-logo">
+                        <span class="logo-icon">⬡</span> {{ student.name }}
+                    </h3>
+                    <p class="footer-desc">
+                        Portfolio học tập môn Nhập môn Công nghệ số và Ứng dụng Trí tuệ Nhân tạo.
+                    </p>
+                    <p class="footer-id">MSSV: {{ student.student_id }}</p>
+                </div>
+
+                <!-- Cột 2: Điều hướng -->
+                <div class="footer-col">
+                    <h4 class="footer-title">Điều hướng</h4>
+                    <ul class="footer-links">
+                        <li><a href="{{ url_for('index') }}">Giới thiệu</a></li>
+                        <li><a href="{{ url_for('projects') }}">Dự án</a></li>
+                        <li><a href="{{ url_for('summary') }}">Tổng kết</a></li>
+                    </ul>
+                </div>
+
+                <!-- Cột 3: Liên hệ -->
+                <div class="footer-col">
+                    <h4 class="footer-title">Liên hệ</h4>
+                    <ul class="footer-contact">
+                        <li>{{ student.email }}</li>
+                        <li>{{ student.phone }}</li>
+                        <li>{{ student.faculty }}</li>
+                        <li>{{ student.university }}</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Footer Bottom -->
+            <div class="footer-bottom">
+                <p>© 2024 {{ student.name }} · {{ student.major }} · Được xây dựng bằng Python Flask</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript chính -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
