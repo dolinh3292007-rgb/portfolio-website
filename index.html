@@ -1,0 +1,197 @@
+{% extends "base.html" %}
+
+{% block title %}Giới thiệu - {{ student.name }}{% endblock %}
+
+{% block content %}
+
+<!-- ====== HERO SECTION ====== -->
+<section class="hero">
+    <!-- Nền trang trí -->
+    <div class="hero-bg">
+        <div class="hero-blob blob-1"></div>
+        <div class="hero-blob blob-2"></div>
+        <div class="hero-grid"></div>
+    </div>
+
+    <div class="container">
+        <div class="hero-layout">
+            <!-- Nội dung chính -->
+            <div class="hero-content" data-aos="fade-right">
+                <div class="hero-badge">
+                    <span class="badge-dot"></span>
+                    {{ student.year }}
+                </div>
+                <h1 class="hero-title">
+                    Xin chào!<br>
+                    Tôi là <span class="highlight">{{ student.name }}</span>
+                </h1>
+                <p class="hero-major">{{ student.major }} · {{ student.university }}</p>
+                <p class="hero-desc">
+                    Chào mừng đến với portfolio học tập của tôi — nơi lưu giữ hành trình
+                    khám phá thế giới <strong>Công nghệ số</strong> và
+                    <strong>Trí tuệ Nhân tạo</strong> trong học kỳ đầu tiên.
+                </p>
+                <div class="hero-quote">
+                    <span class="quote-mark">"</span>
+                    <p>{{ student.quote.strip('"') }}</p>
+                    <span class="quote-author">{{ student.quote_author }}</span>
+                </div>
+                <div class="hero-actions">
+                    <a href="{{ url_for('projects') }}" class="btn btn-primary">
+                        Xem Dự án <span>→</span>
+                    </a>
+                    <a href="{{ url_for('summary') }}" class="btn btn-outline">
+                        Tổng kết
+                    </a>
+                </div>
+            </div>
+
+            <!-- Avatar / Card -->
+            <div class="hero-card-wrap" data-aos="fade-left">
+                <div class="hero-card">
+                    <div class="card-avatar">
+                        <div class="avatar-placeholder">
+                            {{ student.name[0] }}{{ student.name.split()[-1][0] }}
+                        </div>
+                        <div class="avatar-ring"></div>
+                    </div>
+                    <div class="card-info">
+                        <h3>{{ student.name }}</h3>
+                        <p>{{ student.student_id }}</p>
+                    </div>
+                    <div class="card-stats">
+                        <div class="stat">
+                            <span class="stat-num">6</span>
+                            <span class="stat-label">Bài tập</span>
+                        </div>
+                        <div class="stat-divider"></div>
+                        <div class="stat">
+                            <span class="stat-num">9.0</span>
+                            <span class="stat-label">GPA</span>
+                        </div>
+                        <div class="stat-divider"></div>
+                        <div class="stat">
+                            <span class="stat-num">120h</span>
+                            <span class="stat-label">Học tập</span>
+                        </div>
+                    </div>
+                    <div class="card-tags">
+                        <span class="ctag">Python</span>
+                        <span class="ctag">AI</span>
+                        <span class="ctag">Data</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ====== SỞ THÍCH ====== -->
+<section class="section hobbies-section">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-badge">Về tôi</span>
+            <h2 class="section-title">Sở thích & Đam mê</h2>
+            <p class="section-sub">Những điều tôi yêu thích ngoài việc học</p>
+        </div>
+        <div class="hobbies-grid">
+            {% for hobby in student.hobbies %}
+            <div class="hobby-card" data-aos="fade-up" data-aos-delay="{{ loop.index0 * 80 }}">
+                <div class="hobby-icon">{{ hobby.icon }}</div>
+                <h4>{{ hobby.title }}</h4>
+                <p>{{ hobby.desc }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- ====== MỤC TIÊU HỌC TẬP ====== -->
+<section class="section goals-section">
+    <div class="container">
+        <div class="goals-layout">
+            <!-- Mục tiêu học tập -->
+            <div class="goals-col" data-aos="fade-right">
+                <div class="goals-header">
+                    <div class="goals-icon"></div>
+                    <div>
+                        <span class="section-badge">Định hướng</span>
+                        <h2 class="goals-title">Mục tiêu học tập</h2>
+                    </div>
+                </div>
+                <ul class="goals-list">
+                    {% for goal in student.learning_goals %}
+                    <li class="goal-item">
+                        <span class="goal-check">✓</span>
+                        <span>{{ goal }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Mục tiêu Portfolio -->
+            <div class="goals-col" data-aos="fade-left">
+                <div class="goals-header">
+                    <div class="goals-icon"></div>
+                    <div>
+                        <span class="section-badge">Portfolio</span>
+                        <h2 class="goals-title">Mục tiêu Portfolio</h2>
+                    </div>
+                </div>
+                <ul class="goals-list">
+                    {% for goal in student.portfolio_goals %}
+                    <li class="goal-item">
+                        <span class="goal-check goal-check--blue">◈</span>
+                        <span>{{ goal }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ====== THÔNG TIN LIÊN HỆ ====== -->
+<section class="section contact-section">
+    <div class="container">
+        <div class="contact-card" data-aos="zoom-in">
+            <div class="contact-bg"></div>
+            <div class="contact-content">
+                <h2>Thông tin liên hệ</h2>
+                <p>Liên hệ với tôi để trao đổi về học tập và công nghệ</p>
+                <div class="contact-grid">
+                    <div class="contact-item">
+                        <span class="contact-icon"></span>
+                        <div>
+                            <span class="contact-label">Email</span>
+                            <span class="contact-value">{{ student.email }}</span>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon"></span>
+                        <div>
+                            <span class="contact-label">Điện thoại</span>
+                            <span class="contact-value">{{ student.phone }}</span>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon"></span>
+                        <div>
+                            <span class="contact-label">Khoa</span>
+                            <span class="contact-value">{{ student.faculty }}</span>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon"></span>
+                        <div>
+                            <span class="contact-label">Trường</span>
+                            <span class="contact-value">{{ student.university }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
