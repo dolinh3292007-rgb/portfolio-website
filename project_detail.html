@@ -1,0 +1,220 @@
+{% extends "base.html" %}
+
+{% block title %}{{ project.title }} - {{ student.name }}{% endblock %}
+
+{% block content %}
+
+<!-- ====== PROJECT HERO ====== -->
+<section class="project-hero" style="--accent: {{ project.color }}">
+    <div class="ph-bg">
+        <div class="ph-pattern"></div>
+    </div>
+    <div class="container">
+        <div class="ph-content" data-aos="fade-up">
+            <!-- Breadcrumb -->
+            <div class="breadcrumb breadcrumb--light">
+                <a href="{{ url_for('index') }}">Trang chủ</a>
+                <span>/</span>
+                <a href="{{ url_for('projects') }}">Dự án</a>
+                <span>/</span>
+                <span>{{ project.title }}</span>
+            </div>
+
+            <div class="ph-header">
+                <div class="ph-icon-wrap">
+                    <span class="ph-icon">{{ project.icon }}</span>
+                </div>
+                <div class="ph-meta">
+                    <div class="ph-num">Bài tập {{ "%02d" % project.id }}</div>
+                    <h1 class="ph-title">{{ project.title }}</h1>
+                    <div class="ph-tags">
+                        <span class="ph-badge">{{ project.category }}</span>
+                        <span class="ph-badge">{{ project.week }}</span>
+                        <span class="ph-badge ph-badge--gold">{{ project.grade }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ====== NỘI DUNG CHI TIẾT ====== -->
+<section class="section">
+    <div class="container">
+        <div class="detail-layout">
+
+            <!-- Cột chính (nội dung) -->
+            <div class="detail-main">
+
+                <!-- Ảnh minh chứng -->
+                <div class="detail-card" data-aos="fade-up">
+                    <div class="dc-header">
+                        <span class="dc-icon"></span>
+                        <h2>Hình ảnh minh chứng</h2>
+                    </div>
+                    <div class="project-image-wrap">
+                        <img src="{{ project.image }}" alt="{{ project.title }}"
+                             class="project-img"
+                             onerror="this.src='/static/images/placeholder.svg'; this.onerror=null;">
+                        <div class="img-caption">{{ project.title }} - {{ student.name }}</div>
+                    </div>
+                </div>
+
+                <!-- Mục tiêu -->
+                <div class="detail-card" data-aos="fade-up">
+                    <div class="dc-header">
+                        <span class="dc-icon"></span>
+                        <h2>Mục tiêu bài tập</h2>
+                    </div>
+                    <p class="dc-text">{{ project.objective }}</p>
+                </div>
+
+                <!-- Quá trình thực hiện -->
+                <div class="detail-card" data-aos="fade-up">
+                    <div class="dc-header">
+                        <span class="dc-icon"></span>
+                        <h2>Quá trình thực hiện</h2>
+                    </div>
+                    <div class="process-steps">
+                        {% for step in project.process %}
+                        <div class="process-step">
+                            <div class="step-num">{{ loop.index }}</div>
+                            <div class="step-content">{{ step }}</div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Kết quả đạt được -->
+                <div class="detail-card" data-aos="fade-up">
+                    <div class="dc-header">
+                        <span class="dc-icon"></span>
+                        <h2>Kết quả đạt được</h2>
+                    </div>
+                    <div class="result-box">
+                        <p class="dc-text">{{ project.results }}</p>
+                    </div>
+                    <!-- Kỹ năng học được -->
+                    <div class="skills-learned">
+                        <h4>Kỹ năng đạt được:</h4>
+                        <div class="skill-tags">
+                            {% for skill in project.skills_learned %}
+                            <span class="skill-tag">{{ skill }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+            </div><!-- end detail-main -->
+
+            <!-- Cột phụ (sidebar) -->
+            <aside class="detail-sidebar">
+
+                <!-- Thông tin nhanh -->
+                <div class="sidebar-card" data-aos="fade-left">
+                    <h3 class="sc-title">Thông tin</h3>
+                    <ul class="sc-info">
+                        <li>
+                            <span class="sci-label">Danh mục</span>
+                            <span class="sci-value">{{ project.category }}</span>
+                        </li>
+                        <li>
+                            <span class="sci-label">Thời gian</span>
+                            <span class="sci-value">{{ project.week }}</span>
+                        </li>
+                        <li>
+                            <span class="sci-label">Điểm số</span>
+                            <span class="sci-value sci-grade">{{ project.grade }}</span>
+                        </li>
+                        <li>
+                            <span class="sci-label">Tags</span>
+                            <div class="sci-tags">
+                                {% for tag in project.tags %}
+                                <span class="stag">{{ tag }}</span>
+                                {% endfor %}
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Tài nguyên -->
+                <div class="sidebar-card" data-aos="fade-left" data-aos-delay="100">
+                    <h3 class="sc-title">Tài nguyên</h3>
+                    <div class="resources">
+                        {% if project.pdf %}
+                            <a href="{{ project.pdf }}" target="_blank" class="resource-btn resource-btn--pdf">
+                            <div>
+                                <span class="rb-label">Tải báo cáo</span>
+                                <span class="rb-sub">File PDF</span>
+                            </div>
+                        </a>
+                        {% endif %}
+                        {% if project.video %}
+                            <a href="{{ project.video }}" target="_blank" class="resource-btn resource-btn--video">
+                            <div>
+                                <span class="rb-label">Xem video</span>
+                                <span class="rb-sub">YouTube</span>
+                            </div>
+                        </a>
+                        {% endif %}
+                        {% if not project.pdf and not project.video %}
+                        <p class="no-resource">Chưa có tài nguyên đính kèm</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Điều hướng bài tập -->
+                <div class="sidebar-card" data-aos="fade-left" data-aos-delay="200">
+                    <h3 class="sc-title">Các bài tập khác</h3>
+                    <ul class="nav-projects">
+                        {% for p in projects %}
+                        <li>
+                            <a href="{{ url_for('project_detail', slug=p.slug) }}"
+                               class="nav-project-link {% if p.id == project.id %}active{% endif %}">
+                                <span class="npl-icon">{{ p.icon }}</span>
+                                <span class="npl-title">{{ p.title[:30] }}{% if p.title|length > 30 %}...{% endif %}</span>
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+            </aside>
+        </div><!-- end detail-layout -->
+
+        <!-- Điều hướng Prev / Next -->
+        <div class="project-nav" data-aos="fade-up">
+            {% set prev_p = projects[project.id - 2] if project.id > 1 else None %}
+            {% set next_p = projects[project.id] if project.id < projects|length else None %}
+
+            <div class="pn-prev">
+                {% if prev_p %}
+                <a href="{{ url_for('project_detail', slug=prev_p.slug) }}" class="pn-btn">
+                    <span class="pn-arrow">←</span>
+                    <div>
+                        <span class="pn-label">Bài trước</span>
+                        <span class="pn-title">{{ prev_p.title }}</span>
+                    </div>
+                </a>
+                {% endif %}
+            </div>
+
+            <a href="{{ url_for('projects') }}" class="btn btn-outline">Tất cả bài tập</a>
+
+            <div class="pn-next">
+                {% if next_p %}
+                <a href="{{ url_for('project_detail', slug=next_p.slug) }}" class="pn-btn pn-btn--right">
+                    <div>
+                        <span class="pn-label">Bài tiếp theo</span>
+                        <span class="pn-title">{{ next_p.title }}</span>
+                    </div>
+                    <span class="pn-arrow">→</span>
+                </a>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}

@@ -50,9 +50,11 @@
             <div class="hero-card-wrap" data-aos="fade-left">
                 <div class="hero-card">
                     <div class="card-avatar">
-                        <div class="avatar-placeholder">
-                            {{ student.name[0] }}{{ student.name.split()[-1][0] }}
-                        </div>
+                        {% if student.avatar %}
+                        <img src="{{ student.avatar }}" alt="Avatar" class="avatar-img">
+                        {% else %}
+                        <div class="avatar-placeholder">{{ student.name[0] }}{{ student.name.split()[-1][0] }}</div>
+                        {% endif %}
                         <div class="avatar-ring"></div>
                     </div>
                     <div class="card-info">
@@ -160,7 +162,7 @@
                 <h2>Thông tin liên hệ</h2>
                 <p>Liên hệ với tôi để trao đổi về học tập và công nghệ</p>
                 <div class="contact-grid">
-                    <div class="contact-item">
+                        <div class="contact-item">
                         <span class="contact-icon"></span>
                         <div>
                             <span class="contact-label">Email</span>
